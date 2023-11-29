@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <title>hello-wasm example</title>
+  </head>
+  <body>
+    <section id="app">
+      <h2>{{todoDataRef.greeting}}</h2>
+      <ul>
+        <li v-for="todo in todoDataRef.todos">
+          {{todo}}
+        </li>
+      </ul>
+    </section>
+    <script type="module">
+      import { createApp, ref, onMounted } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
+      import init, { greet, todos } from "./pkg/firstwa.js";
+    
+
+
+      createApp({
+        setup() {
+          const todoDataRef = ref({
+            greeting: "",
+            todos: []
+          })
+
+          onMounted(async () => {
+            await init()
+            todoDataRef.value.greeting = greet("Morten")
+            todoDataRef.value.todos = todos(20)
+          })
+
+          return {
+            todoDataRef
+          }
+        }
+      })
+      .mount("#app");
+    </script>
+  </body>
+</html>
